@@ -1,0 +1,212 @@
+/* TopReviews.css */
+.top-reviews {
+    padding: 5rem 0;
+    background-color: #f8fafc;
+}
+
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* Header Styling */
+.section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.section-header h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.025em;
+}
+
+.section-header p {
+    font-size: 1.25rem;
+    color: #64748b;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Grid Layout */
+.cities-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-flow: dense;
+    gap: 1.5rem;
+    /* Fixed height is restrictive, let it flow */
+    min-height: 600px; 
+}
+
+/* Card Base Styles */
+.city-card {
+    position: relative;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    cursor: pointer;
+    background-color: #e2e8f0; /* skeleton color */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    isolation: isolate;
+}
+
+.city-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    z-index: 10;
+}
+
+.city-card:focus-visible {
+    outline: 3px solid #f97316; /* Orange-500 */
+    outline-offset: 4px;
+}
+
+/* Image Background */
+.city-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.city-card:hover .city-bg {
+    transform: scale(1.1);
+}
+
+/* Overlay Gradient */
+.city-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.85) 0%,
+        rgba(0, 0, 0, 0.4) 40%,
+        rgba(0, 0, 0, 0) 100%
+    );
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+}
+
+.city-card:hover::after {
+    opacity: 1;
+}
+
+/* Text Content */
+.city-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1.5rem;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.city-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+}
+
+.city-reviews {
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+}
+
+.city-card:hover .city-name {
+    transform: translateY(-2px);
+}
+
+.city-card:hover .city-reviews {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.review-badge {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(4px);
+    padding: 0.35rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    color: white;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+
+/* Grid Sizing */
+.city-card.medium {
+    grid-column: span 1;
+    height: 250px;
+}
+
+.city-card.large {
+    grid-column: span 2;
+    grid-row: span 2;
+    height: 524px; /* 250*2 + 24 gap */
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .cities-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .city-card.large {
+        grid-column: span 2;
+        grid-row: span 2;
+    }
+}
+
+@media (max-width: 768px) {
+    .section-header h2 {
+        font-size: 2rem;
+    }
+
+    .cities-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    
+    .city-card.medium {
+        height: 200px;
+    }
+    
+    .city-card.large {
+        grid-column: span 2;
+        grid-row: span 1; /* Reset to 1 row height on mobile, but full width */
+        height: 250px;
+    }
+    
+    /* Make reviews always visible on touch devices */
+    .city-reviews {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 480px) {
+    .cities-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .city-card.large, .city-card.medium {
+        grid-column: span 1;
+        grid-row: auto;
+        height: 220px;
+    }
+}
