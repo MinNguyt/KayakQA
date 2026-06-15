@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.example.fleet.infrastructure.grpc.proto";
+
+package chatbot;
+
+// Fleet Search Service - used by chatbot-service via gRPC
+service FleetSearchService {
+    rpc SearchVehicles(VehicleSearchRequest) returns (VehicleSearchResponse);
+}
+
+message VehicleSearchRequest {
+    int32 bus_id = 1;
+}
+
+message VehicleMatch {
+    int32 id = 1;
+    string name = 2;
+    string license_plate = 3;
+    int32 capacity = 4;
+    string featured_image = 5;
+    string company_name = 6;
+}
+
+message VehicleSearchResponse {
+    VehicleMatch vehicle = 1;
+}

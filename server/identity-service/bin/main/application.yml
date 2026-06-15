@@ -1,0 +1,53 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: identity-service
+  
+  # Database Configuration
+  datasource:
+    url: jdbc:mysql://localhost:${DB_PORT:3306}/kayak_user_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=utf8
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # JPA / Hibernate
+  jpa:
+    hibernate:
+      ddl-auto: validate  # Use validate since we're using Flyway migrations
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    open-in-view: false
+
+  # Flyway Migrations
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    baseline-version: 0
+
+  # DevTools
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+    livereload:
+      enabled: true
+
+# JWT Configuration
+jwt:
+  secret: ${JWT_SECRET:your-super-secret-jwt-key-here-change-in-production}
+  access:
+    expiration: 90000000  # ~25 hours
+  refresh:
+    expiration: 604800000  # 7 days
+
+# Logging
+logging:
+  level:
+    root: INFO
+    com.example.identity: DEBUG
+    org.springframework.security: DEBUG

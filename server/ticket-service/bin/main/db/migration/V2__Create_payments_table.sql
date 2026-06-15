@@ -1,0 +1,21 @@
+CREATE TABLE payments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    ticket_id INT NOT NULL,
+    sepay_id BIGINT,
+    gateway VARCHAR(100),
+    transaction_date DATETIME,
+    account_number VARCHAR(50),
+    code VARCHAR(100),
+    content TEXT,
+    transfer_type VARCHAR(10),
+    transfer_amount DECIMAL(15,2),
+    accumulated DECIMAL(15,2),
+    sub_account VARCHAR(100),
+    reference_code VARCHAR(100),
+    description TEXT,
+    status VARCHAR(20) NOT NULL DEFAULT 'PENDING',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (ticket_id) REFERENCES tickets(id),
+    UNIQUE KEY uk_sepay_id (sepay_id)
+);

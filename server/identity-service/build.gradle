@@ -1,0 +1,83 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.5.6'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.flywaydb.flyway' version '11.10.0'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Core Web & Validation
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // Database & ORM
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'com.mysql:mysql-connector-j'
+    implementation 'org.flywaydb:flyway-core:11.10.0'
+    implementation 'org.flywaydb:flyway-mysql:11.10.0'
+    
+    // H2 for testing
+    testImplementation 'com.h2database:h2'
+
+    // Security & JWT
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // API Documentation
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
+
+    // Testing
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+
+    // Env
+    implementation 'me.paulschwarz:spring-dotenv:4.0.0'
+    
+    // DevTools
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // AOP for LoggingAspect
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+
+    // JSON Logging Support
+    implementation 'ch.qos.logback.contrib:logback-json-classic:0.1.5'
+    implementation 'ch.qos.logback.contrib:logback-jackson:0.1.5'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+}
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+flyway {
+    url = 'jdbc:mysql://localhost:3306/users_db'
+    user = 'root'
+    password = 'password'
+    locations = ['classpath:db/migration']
+}

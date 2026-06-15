@@ -1,0 +1,58 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: schedule-service
+  
+  # Database Configuration
+  datasource:
+    url: jdbc:mysql://localhost:${DB_PORT:3306}/kayak_schedule_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=utf8
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # JPA / Hibernate
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    open-in-view: false
+
+  # Flyway Migrations
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    baseline-version: 0
+
+  # DevTools
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+    livereload:
+      enabled: true
+
+# JWT Configuration
+jwt:
+  secret: ${JWT_SECRET:your-super-secret-jwt-key-here-change-in-production}
+
+# Logging
+logging:
+  level:
+    root: INFO
+    com.example.schedule: DEBUG
+    org.springframework.security: DEBUG
+
+# Chatbot Embedding
+chatbot:
+  hf-token: ${HF_TOKEN:}
+
+# gRPC Server
+grpc:
+  server:
+    port: 9094

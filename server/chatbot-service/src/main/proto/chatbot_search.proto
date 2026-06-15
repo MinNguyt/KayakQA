@@ -1,0 +1,97 @@
+//define variables : allow multiple files, java_packages -> server services,dtos
+
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.example.chatbot.infrastructure.grpc.proto";
+
+package chatbot;
+
+// === Route Service ===
+service RouteSearchService {
+    rpc SearchStations(EmbeddingSearchRequest) returns (StationSearchResponse);
+    rpc SearchRoutes(RouteSearchRequest) returns (RouteSearchResponse);
+}
+
+message EmbeddingSearchRequest {
+    repeated double embedding = 1;
+    int32 top_k = 2;
+}
+
+message StationMatch {
+    int32 id = 1;
+    string name = 2;
+    string city = 3;
+    string province = 4;
+    double similarity = 5;
+}
+
+message StationSearchResponse {
+    repeated StationMatch stations = 1;
+}
+
+message RouteSearchRequest {
+    int32 departure_station_id = 1;
+    int32 arrival_station_id = 2;
+}
+
+message RouteMatch {
+    int32 id = 1;
+    int32 departure_station_id = 2;
+    int32 arrival_station_id = 3;
+    string departure_station_name = 4;
+    string arrival_station_name = 5;
+    string distance_km = 6;
+    string estimated_duration_hours = 7;
+}
+
+message RouteSearchResponse {
+    repeated RouteMatch routes = 1;
+}
+
+// === Schedule Service ===
+service ScheduleSearchService {
+    rpc SearchSchedules(ScheduleSearchRequest) returns (ScheduleSearchResponse);
+}
+
+message ScheduleSearchRequest {
+    int32 route_id = 1;
+    string departure_date = 2;
+}
+
+message ScheduleMatch {
+    int32 id = 1;
+    int32 route_id = 2;
+    int32 bus_id = 3;
+    string departure_time = 4;
+    string arrival_time = 5;
+    int32 available_seats = 6;
+    int32 total_seats = 7;
+    string status = 8;
+}
+
+message ScheduleSearchResponse {
+    repeated ScheduleMatch schedules = 1;
+}
+
+// === Fleet Service ===
+service FleetSearchService {
+    rpc SearchVehicles(VehicleSearchRequest) returns (VehicleSearchResponse);
+}
+
+message VehicleSearchRequest {
+    int32 bus_id = 1;
+}
+
+message VehicleMatch {
+    int32 id = 1;
+    string name = 2;
+    string license_plate = 3;
+    int32 capacity = 4;
+    string featured_image = 5;
+    string company_name = 6;
+}
+
+message VehicleSearchResponse {
+    VehicleMatch vehicle = 1;
+}

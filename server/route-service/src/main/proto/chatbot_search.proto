@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.example.route.infrastructure.grpc.proto";
+
+package chatbot;
+
+// Route Search Service - used by chatbot-service via gRPC
+service RouteSearchService {
+    // Search stations by embedding similarity
+    rpc SearchStations(EmbeddingSearchRequest) returns (StationSearchResponse);
+    // Search routes by departure and arrival station IDs
+    rpc SearchRoutes(RouteSearchRequest) returns (RouteSearchResponse);
+}
+
+message EmbeddingSearchRequest {
+    repeated double embedding = 1;
+    int32 top_k = 2;
+}
+
+message StationMatch {
+    int32 id = 1;
+    string name = 2;
+    string city = 3;
+    string province = 4;
+    double similarity = 5;
+}
+
+message StationSearchResponse {
+    repeated StationMatch stations = 1;
+}
+
+message RouteSearchRequest {
+    int32 departure_station_id = 1;
+    int32 arrival_station_id = 2;
+}
+
+message RouteMatch {
+    int32 id = 1;
+    int32 departure_station_id = 2;
+    int32 arrival_station_id = 3;
+    string departure_station_name = 4;
+    string arrival_station_name = 5;
+    string distance_km = 6;
+    string estimated_duration_hours = 7;
+}
+
+message RouteSearchResponse {
+    repeated RouteMatch routes = 1;
+}
